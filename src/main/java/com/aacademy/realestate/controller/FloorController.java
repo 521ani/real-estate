@@ -30,19 +30,18 @@ public class FloorController {
         this.floorConverter = floorConverter;
     }
 
+    @GetMapping(value = "/id/{id}")
+    public ResponseEntity<FloorDto> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(floorConverter.toFloorDto(floorService.findById(id)));
+    }
+
+    @GetMapping(value = "/number/{number}")
+    public ResponseEntity<FloorDto> findByNumber(@PathVariable Integer number) {
+        return ResponseEntity.ok(floorConverter.toFloorDto(floorService.findByNumber(number)));
+    }
+
     @GetMapping
     public ResponseEntity<Set<FloorDto>> findAll(){
-        /*
-        Set<FloorDto> floorDtos = new TreeSet<>(Comparator.comparing(FloorDto::getId));
-
-        Set<Floor> floors = floorService.findAll();
-
-        for (Floor floor : floors) {
-            FloorDto floorDto = floorConverter.toFloorDto(floor);
-            floorDtos.add(floorDto);
-        }
-        */
-
         return ResponseEntity.ok(floorService.findAll()
                 .stream()
                 .map(floorConverter::toFloorDto)
@@ -56,9 +55,20 @@ public class FloorController {
         return ResponseEntity.ok(floorConverter.toFloorDto(savedFloor));
     }
 
+    @PutMapping
+    public ResponseEntity<FloorDto> update(@RequestBody @Valid FloorDto floorDto,
+                                           @PathVariable Long id) {
+        Floor floor =  floorConverter.toFloor(floorDto);
+        Floor updatedFloor =  floorService.update(id, floor);
+        return ResponseEntity.ok(floorConverter.toFloorDto(updatedFloor));
+
+
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> delete(Long id) {
         floorService.delete(id);
         return ResponseEntity.ok().build();
     }
+
 }

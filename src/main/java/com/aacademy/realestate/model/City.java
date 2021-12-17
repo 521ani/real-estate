@@ -10,6 +10,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,6 +25,14 @@ public class City {
     private Long id;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "cities_neighborhoods",
+            joinColumns = @JoinColumn(name = "city_id"),
+            inverseJoinColumns = @JoinColumn(name = "neighborhood_id")
+    )
+    private Set<Neighborhood> neighborhoods;
 }

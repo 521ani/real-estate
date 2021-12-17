@@ -8,11 +8,9 @@ public interface NeighborhoodService {
 
     Neighborhood save(Neighborhood neighborhood);
 
-    Neighborhood update(Long id, Neighborhood neighborhood);
+    Neighborhood findById(Long id);
 
     Neighborhood findByName(String name);
 
     Set<Neighborhood> findAll();
-
-    Neighborhood findById(Long id);
 }

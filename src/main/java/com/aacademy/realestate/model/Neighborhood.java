@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +22,7 @@ public class Neighborhood {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @ManyToMany(mappedBy = "neighborhoods")
+    private Set<City> cities;
 
 }
